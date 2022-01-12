@@ -1,0 +1,146 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <style>
+         .button {
+           background-color: #977427;
+           opacity:1
+           border: none;
+           color: white;
+           padding: 8px;
+           text-align: center;
+           text-decoration: none;
+           display: inline-block;
+           font-size: 9px;
+           margin: 5px 6px;
+           cursor: pointer;
+           border-radius: 5px;
+           border: 0px solid rgba(9, 148, 28, 0.541);
+           box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2), 0 0px 0px 0 rgba(0,0,0,0.19);
+
+         }
+
+         .button:hover{
+        opacity:0.6;
+      }
+
+         .wrap {
+         border: solid 1px #ccc;
+         padding: 20px;
+         text-align: center;
+       }
+
+       #output {
+         display: inline-block;
+         top: 4px;
+         position: relative;
+         border: dotted 1px #ccc;
+         padding: 2px;
+       }
+
+       .button {
+         border: solid 0px #ccc;
+       }
+    </style>
+  </head>
+  <body onload="init();" style="margin: 0px; overflow: hidden">
+    <div
+      style="
+        position: fixed;
+        bottom: 10px;
+        left: 140px;
+        width: 100%;
+        text-align: center;
+        z-index: 1;
+      "
+    >
+      <button class="button" id="btn1">Demo_RA_1</button>
+    </div>
+
+    <a-scene
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+      color-space="sRGB"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      shadow="type: pcfsoft; autoUpdate: true;"
+      renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true;"
+    >
+      <!-- Assets -->
+      <a-assets>
+        <video
+          id="video_0"
+          loop="false"
+          autoplay="true"
+          src="https://cdn.glitch.global/632dfc51-6564-41bb-ac6f-bb945e017fdc/Placas_Tectonicas_explicacion.webm?v=1641919983491"
+          crossorigin="anonymous"
+        ></video>
+      </a-assets>
+
+      <a-camera position="0 0.15 0">
+        <a-marker preset="hiro" videohandler>
+          <a-entity position="0 0 -0.8" scale="3.5 3.5 0.1">
+            <a-video
+              id="#v_0"
+              src="#video_0"
+              width="1.6"
+              height="1"
+              scale="1 1 0.1"
+              position="0 0 -1.2709442387404124e-09"
+              rotation="0 0.0 0"
+              visible="true"
+              shadow="cast: false"
+            >
+            </a-video>
+          </a-entity>
+          <a-entity
+            id="light1"
+            position="4.076245307922363 2.903861999511719 0"
+            light="castShadow:true; color:#ffffff; distance:40.0; type:point; intensity:6.0; shadowBias: -0.001; shadowCameraFar: 501.02; shadowCameraBottom: 12; shadowCameraFov: 101.79; shadowCameraNear: 0; shadowCameraTop: -5; shadowCameraRight: 10; shadowCameraLeft: -10; shadowRadius: 2;"
+          ></a-entity>
+          <a-entity
+            id="light2"
+            position="-6.3098464012146 1.8208726644515991 0"
+            light="castShadow:true; color:#ffffff; distance:40.0; type:point; intensity:3.0; shadowBias: -0.001; shadowCameraFar: 501.02; shadowCameraBottom: 12; shadowCameraFov: 101.79; shadowCameraNear: 0; shadowCameraTop: -5; shadowCameraRight: 10; shadowCameraLeft: -10; shadowRadius: 2;"
+          ></a-entity>
+        </a-marker>
+      </a-camera>
+    </a-scene>
+
+    <script>
+      AFRAME.registerComponent("videohandler", {
+        init: function () {
+          var marker = this.el;
+          this.vid = document.querySelector("#video_0");
+
+          marker.addEventListener(
+            "markerFound",
+            function () {
+              this.toggle = true;
+              this.vid.play();
+            }.bind(this)
+          );
+
+          marker.addEventListener(
+            "markerLost",
+            function () {
+              this.toggle = false;
+              this.vid.pause();
+            }.bind(this)
+          );
+        },
+      });
+      document.getElementById("btn1").addEventListener("click", (e) => {
+        document
+          .querySelector("#video_0")
+          .setAttribute(
+            "src",
+            "https://cdn.glitch.global/632dfc51-6564-41bb-ac6f-bb945e017fdc/Placas_Tectonicas_explicacion.webm?v=1641919983491"
+          );
+        document.quertSelector("#video_0").play();
+      });
+    </script>
+  </body>
+</html>
